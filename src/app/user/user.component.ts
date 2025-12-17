@@ -1,7 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
-// import { DUMMY_USERS } from '../dummy-users';
-
-// const randomIndex = Math.floor(Math.random() * DUMMY_USERS.length)
+import { Component, Input, Output, EventEmitter,output } from '@angular/core';
 
 @Component({
   selector: 'app-user',
@@ -10,15 +7,18 @@ import { Component, computed, signal } from '@angular/core';
   templateUrl: './user.component.html',
   styleUrl: './user.component.css'
 })
+
 export class UserComponent {
-  // selectedUser = signal(DUMMY_USERS[randomIndex]);
-  imagePath =computed(()=>'assets/users/' + this.selectedUser().avatar)        // For Signal
-  // get imagePath() {
-  //   return 'assets/users/' + this.selectedUser.avatar;    works for the State Management or without signal
-  // }
-  // onSelectedUser() {
-  //   const randomIndex = Math.floor(Math.random() * DUMMY_USERS.length)
-  //   this.selectedUser.set(DUMMY_USERS[randomIndex]);
-  //   // this.selectedUser = DUMMY_USERS[randomIndex]    works for the State Management or without signal
-  // }
+  @Input({ required: true }) id!: string;
+  @Input({ required: true }) avatar!: string;
+  @Input({ required: true }) name!: string;
+  // @Output() select = new EventEmitter();
+  select=output<string>();
+  get imagePath() {
+    return 'assets/users/' + this.avatar;
+  }
+
+  onSelectedUser() {
+    this.select.emit(this.id);
+  }
 }
